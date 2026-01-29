@@ -10,4 +10,13 @@ export default defineConfig({
       },
     }),
   ],
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://todo32.vercel.app',
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
 })

@@ -4,13 +4,15 @@ import { useForm } from 'react-hook-form';
 import toast, { Toaster } from 'react-hot-toast';
 import './AuthPage.css';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext'
 // --- Assets ---
 const Icons = {
-  User: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>,
-  Mail: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>,
-  Lock: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>,
+  User: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>,
+  Mail: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" /></svg>,
+  Lock: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>,
   ArrowLeft: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>,
-  CheckMail: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/><path d="M22 6l-10 7L2 6" /></svg>,
+  CheckMail: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" /><path d="M22 6l-10 7L2 6" /></svg>,
   Logo: () => (
     <svg viewBox="0 0 100 100" className="brand-logo">
       <path d="M50 5 L90 25 L90 75 L50 95 L10 75 L10 25 Z" strokeWidth="4" />
@@ -23,10 +25,10 @@ const Icons = {
 const InputField = ({ icon: Icon, type, placeholder, register, name, error }) => (
   <div className={`input-group ${error ? 'error' : ''}`}>
     <div className="input-icon"><Icon /></div>
-    <input 
-      type={type} 
+    <input
+      type={type}
       className="input-field"
-      placeholder={placeholder} 
+      placeholder={placeholder}
       {...register(name, { required: true })}
     />
   </div>
@@ -34,7 +36,9 @@ const InputField = ({ icon: Icon, type, placeholder, register, name, error }) =>
 
 export default function AuthPage() {
   const [mode, setMode] = useState('login');
-  
+  const navigate = useNavigate();
+  const { login } = useAuth();
+
   const { register: loginReg, handleSubmit: handleLogin, formState: { errors: loginErrors, isSubmitting: loginLoading } } = useForm();
   const { register: signupReg, handleSubmit: handleSignup, formState: { errors: signupErrors, isSubmitting: signupLoading } } = useForm();
   const { register: forgotReg, handleSubmit: handleForgot, formState: { errors: forgotErrors, isSubmitting: forgotLoading }, setError: setForgotError } = useForm();
@@ -47,55 +51,97 @@ export default function AuthPage() {
 
   const onLoginSubmit = async (data) => {
 
-    try{
-        const res = await axios.post(
-            import.meta.env.VITE_API_URL,
-            {
-                email : data.email,
-                password : data.password
-            },
-            {
-                headers : {
+    try {
+      const res = await axios.post(
+        import.meta.env.VITE_API_URL + "/login",
+        {
+          email: data.email,
+          password: data.password
+        },
+        {
+          headers: {
             "Content-Type": "application/json",
           },
-          withCredentials: true, 
-        
-            }
-        )
-        toast.success("Welcome back!");
-        const userData = res.data;
+          withCredentials: true,
 
-        console.log(userData);
-        
-    }catch(err){
-        toast.error(err.response?.data || err.message)
+        }
+      )
+      const userData = res.data;
+      login(userData)
+      navigate('/dashboard');
+      toast.success("Welcome back!");
+
+    } catch (err) {
+      const errorMsg = err.response?.data?.msg || err.response?.data?.message || err.message || "An error occurred";
+      toast.error(errorMsg);
 
     }
 
   };
 
   const onSignupSubmit = async (data) => {
-    await new Promise(r => setTimeout(r, 1500));
-    toast.success("Account Created");
+
+    try {
+      const res = await axios.post(
+        import.meta.env.VITE_API_URL + "/signup",
+        {
+          username: data.username,
+          email: data.email,
+          password: data.password
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+
+        }
+      )
+      const userData = res.data;
+      login(userData);
+      navigate("/dashboard")
+      toast.success(res.data.msg);
+
+    } catch (err) {
+      const errorMsg = err.response?.data?.msg || err.response?.data?.message || err.message || "An error occurred";
+      toast.error(errorMsg);
+
+    }
   };
 
   const onForgotSubmit = async (data) => {
-    await new Promise(r => setTimeout(r, 1500));
-    setMode('check-mail');
+    try {
+      const res = await axios.post(
+        import.meta.env.VITE_API_URL + "/forgot-password",
+        {
+          email: data.email,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      )
+      setMode('check-mail');
+      toast.success(res.data.msg);
+
+    } catch (err) {
+      const errorMsg = err.response?.data?.msg || err.response?.data?.message || err.message || "An error occurred";
+      toast.error(errorMsg);
+
+    }
   };
 
   return (
     <div className="page-container">
-      <Toaster position="top-center" toastOptions={{
-        style: { background: '#1F1F1F', color: '#fff', border: '1px solid #333' }
-      }}/>
 
-      <motion.div 
+      <motion.div
         className="glass-card"
         layout
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
       >
-        {/* The "2026" Border Gradient */}
+
         <div className="card-border-gradient" />
 
         <div className="card-content">
@@ -109,7 +155,7 @@ export default function AuthPage() {
           {(mode === 'login' || mode === 'signup') && (
             <div className="toggle-container">
               <div className="toggle-bg">
-                <motion.div 
+                <motion.div
                   className="toggle-glider"
                   layoutId="glider"
                   animate={{ x: mode === 'login' ? 0 : '100%' }}
@@ -123,7 +169,7 @@ export default function AuthPage() {
 
           <div className="forms-wrapper">
             <AnimatePresence mode="wait" custom={mode === 'login' ? 1 : -1}>
-              
+
               {mode === 'login' && (
                 <motion.form
                   key="login"
@@ -135,11 +181,11 @@ export default function AuthPage() {
                 >
                   <InputField icon={Icons.Mail} type="email" placeholder="Email Address" name="email" register={loginReg} error={loginErrors.email} />
                   <InputField icon={Icons.Lock} type="password" placeholder="Password" name="password" register={loginReg} error={loginErrors.password} />
-                  
+
                   <a href="#" onClick={(e) => { e.preventDefault(); setMode('forgot'); }} className="forgot-pass">
                     Forgot Password?
                   </a>
-                  
+
                   <button type="submit" className="action-btn" disabled={loginLoading}>
                     {loginLoading ? 'Authenticating...' : 'Log In'}
                   </button>
@@ -183,7 +229,7 @@ export default function AuthPage() {
                   </button>
                   <div className="back-link-container">
                     <a href="#" onClick={(e) => { e.preventDefault(); setMode('login'); }} className="back-link">
-                       Back to Login
+                      Back to Login
                     </a>
                   </div>
                 </motion.form>

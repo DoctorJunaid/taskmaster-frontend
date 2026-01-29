@@ -1,0 +1,124 @@
+:root {
+  --bg-dark: #0a0a0a;
+  --card-bg: #141414;
+  --text-main: #ffffff;
+  --text-muted: #a1a1aa;
+  --accent-color: #FF5E3A;
+  --accent-dark: #b83a1e; /* Darker orange for 3D edge */
+}
+
+.not-found-container {
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--bg-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow: hidden;
+  
+  /* Subtle mesh pattern */
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(255, 94, 58, 0.1) 0%, transparent 40%);
+}
+
+/* --- THE CARD --- */
+.mech-card-404 {
+  background: var(--card-bg);
+  border: 1px solid #333;
+  border-radius: 24px;
+  padding: 50px 40px;
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+  position: relative;
+  
+  /* 3D Card Look */
+  box-shadow: 
+    0 10px 0 #000, /* Thick physical bottom edge */
+    0 25px 50px rgba(0,0,0,0.5);
+}
+
+/* --- FLOATING ANIMATION (GPU Optimized) --- */
+.floating-icon {
+  color: var(--accent-color);
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 20px;
+  
+  /* Performance Optimization */
+  will-change: transform;
+  animation: float 4s ease-in-out infinite;
+}
+
+.floating-icon svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 0 15px rgba(255, 94, 58, 0.3));
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); } /* Smooth float up */
+  100% { transform: translateY(0px); }
+}
+
+/* --- TYPOGRAPHY --- */
+.error-title {
+  font-size: 4rem;
+  font-weight: 800;
+  line-height: 1;
+  color: #fff;
+  margin-bottom: 10px;
+  letter-spacing: -2px;
+}
+
+.error-desc {
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  line-height: 1.5;
+  margin-bottom: 40px;
+}
+
+/* --- 3D BUTTON (Consistent with Dashboard) --- */
+.mech-home-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #FF9D45 0%, #FF5E3A 100%);
+  border: none;
+  border-radius: 14px;
+  padding: 16px;
+  
+  color: #000;
+  font-weight: 700;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  position: relative;
+  
+  /* THE 3D EDGE */
+  box-shadow: 
+    0 6px 0 var(--accent-dark), /* Physical button lip */
+    0 12px 20px rgba(255, 94, 58, 0.2);
+    
+  transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mech-home-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Press State */
+.mech-home-btn:active {
+  transform: translateY(6px); /* Push down exactly by shadow height */
+  box-shadow: 
+    0 0 0 var(--accent-dark), /* Shadow disappears */
+    inset 0 2px 5px rgba(0,0,0,0.2); /* Inner shadow appears */
+}
+
+.mech-home-btn:hover {
+  filter: brightness(1.1);
+}

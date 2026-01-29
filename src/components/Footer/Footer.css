@@ -1,0 +1,87 @@
+.app-footer {
+  width: 100%;
+  padding: 30px 24px;
+  margin-top: auto; /* Pushes footer to bottom if page content is short */
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(10, 10, 10, 0.5);
+  backdrop-filter: blur(10px);
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+/* Left Side (Text) */
+.footer-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #888;
+  font-size: 0.9rem;
+}
+
+.brand {
+  color: #fff;
+  font-weight: 600;
+}
+
+.divider {
+  opacity: 0.3;
+}
+
+/* Right Side (Links) */
+.footer-links {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.footer-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #888;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.2s, transform 0.2s;
+}
+
+.footer-link svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Hover Effects */
+.footer-link:hover {
+  color: #FF5E3A; /* Matches your Accent Color */
+  transform: translateY(-2px);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 600px) {
+  .footer-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 20px;
+  }
+  
+  .footer-links {
+    gap: 20px;
+    justify-content: center;
+  }
+  
+  .link-text {
+    display: none; /* Hide text on very small screens, show icons only */
+  }
+  
+  .footer-link svg {
+    width: 22px;
+    height: 22px;
+  }
+}
