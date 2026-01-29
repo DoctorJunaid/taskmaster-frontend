@@ -66,9 +66,11 @@ export default function AuthPage() {
 
         }
       )
-      const userData = res.data;
-      login(userData)
-      navigate('/dashboard');
+      // Login successful, wait a moment then refetch user data
+      setTimeout(async () => {
+        await login();
+        navigate('/dashboard');
+      }, 100);
       toast.success("Welcome back!");
 
     } catch (err) {
@@ -97,9 +99,11 @@ export default function AuthPage() {
 
         }
       )
-      const userData = res.data;
-      login(userData);
-      navigate("/dashboard")
+      // Signup successful, wait a moment then refetch user data
+      setTimeout(async () => {
+        await login();
+        navigate("/dashboard");
+      }, 100);
       toast.success(res.data.msg);
 
     } catch (err) {

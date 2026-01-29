@@ -33,9 +33,24 @@ export const AuthProvider = ({ children }) => {
     checkAuth();
   }, []);
 
-  // 2. Login Helper
-  const login = (userData) => {
-    setUser(userData);
+  // 2. Login Helper - refetch user data after login for consistency
+  const login = async () => {
+    try {
+      const res = await axios.get(import.meta.env.VITE_API_URL + '/me', {
+        withCredentials: true
+      });
+
+      if (res.data.isStatus) {
+        setUser(res.data.data);
+      } else if (res.data.user) {
+        setUser(res.data.user);
+      } else {
+        setUser(res.data);
+      }
+    } catch (err) {
+      setUser(null);
+    }
+    setLoading(false);
   };
 
   // 3. Logout Helper

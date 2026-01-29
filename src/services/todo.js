@@ -15,7 +15,7 @@ export const TodoService = {
     create: async (username, taskData) => {
         const response = await axios.post(`${API_URL}/${username}/todo`, taskData, {
             withCredentials: true
-            
+
         });
         console.log(response.data);
         return response.data;
@@ -23,6 +23,13 @@ export const TodoService = {
 
     toggleStatus: async (username, taskId, status) => {
         const response = await axios.patch(`${API_URL}/${username}/todo/${taskId}/status`, { status }, {
+            withCredentials: true
+        });
+        return response.data;
+    },
+
+    delete: async (username, taskId) => {
+        const response = await axios.delete(`${API_URL}/${username}/todo/${taskId}`, {
             withCredentials: true
         });
         return response.data;
