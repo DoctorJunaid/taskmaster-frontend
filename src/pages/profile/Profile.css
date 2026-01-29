@@ -1,0 +1,429 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap");
+
+:root {
+  --bg-dark: #0a0a0a;
+  --card-bg: #141414;
+  --border-color: #27272a;
+  --text-main: #ffffff;
+  --text-muted: #a1a1aa;
+  --accent-gradient: linear-gradient(135deg, #FF9D45 0%, #FF5E3A 100%);
+  --accent-color: #FF5E3A;
+  --success-color: #22c55e;
+  --error-color: #ef4444;
+}
+
+.profile-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 80px 24px 60px;
+  min-height: 100vh;
+  font-family: "Outfit", sans-serif;
+  color: var(--text-main);
+}
+
+/* --- Header --- */
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.header-content h1 {
+  font-size: 2.8rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+  letter-spacing: -1px;
+}
+
+.header-content p {
+  color: var(--text-muted);
+  font-size: 1.15rem;
+}
+
+/* 3D User Badge */
+.user-badge-3d {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: #18181b;
+  border: 1px solid #27272a;
+  padding: 12px 24px 12px 12px;
+  border-radius: 60px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.avatar-3d {
+  width: 56px;
+  height: 56px;
+  background: var(--accent-gradient);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #000;
+  box-shadow: inset 0 -4px 4px rgba(0, 0, 0, 0.2), 0 4px 10px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.4);
+}
+
+.badge-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.badge-name {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.badge-role {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* --- Stats Row (No Upper Color Line) --- */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 48px;
+}
+
+.stat-card {
+  background: #18181b;
+  border: 1px solid #27272a;
+  border-radius: 24px;
+  padding: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* Dark, clean look with inner shadow for depth, NO TOP BORDER */
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.stat-content {
+  z-index: 1;
+}
+
+.stat-number {
+  font-size: 2.5rem;
+  font-weight: 800;
+  line-height: 1;
+  display: block;
+}
+
+.stat-label {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 6px;
+  display: block;
+}
+
+/* Non-Colored / Metallic 3D Icons */
+.icon-3d-wrapper.metallic-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  /* Metallic Silver Gradient */
+  background: linear-gradient(135deg, #3f3f46 0%, #71717a 100%);
+  box-shadow:
+    6px 6px 12px rgba(0, 0, 0, 0.5),
+    -2px -2px 10px rgba(255, 255, 255, 0.08),
+    inset 2px 2px 5px rgba(255, 255, 255, 0.2);
+  transform: rotate(-5deg);
+}
+
+.icon-3d-inner {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+}
+
+.icon-3d-inner svg {
+  width: 32px;
+  height: 32px;
+  color: #fff;
+  /* Crisp white icon */
+  stroke-width: 2.5;
+}
+
+
+/* --- Content Grid --- */
+.profile-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 32px;
+}
+
+.profile-card {
+  background: #18181b;
+  border: 1px solid #27272a;
+  border-radius: 28px;
+  padding: 36px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.2);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 32px;
+}
+
+.header-icon-3d {
+  width: 52px;
+  height: 52px;
+  background: #27272a;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.1), 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.header-icon-3d svg {
+  width: 26px;
+  height: 26px;
+}
+
+.card-header h3 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+/* Edit Toggle */
+.edit-toggle-btn {
+  margin-left: auto;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border: none;
+  background: #27272a;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  box-shadow: 0 4px 0 #18181b;
+}
+
+.edit-toggle-btn:active {
+  transform: translateY(4px);
+  box-shadow: 0 0 0 #18181b;
+}
+
+.edit-toggle-btn.active {
+  background: var(--accent-color);
+  color: #000;
+  box-shadow: 0 4px 0 #c2410c;
+}
+
+/* Info Display */
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 0;
+  border-bottom: 2px dashed #27272a;
+}
+
+.info-row:last-child {
+  border-bottom: none;
+}
+
+.info-row .label {
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.info-row .value {
+  font-weight: 700;
+  font-size: 1.05rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.value.locked {
+  color: var(--text-muted);
+  opacity: 0.7;
+}
+
+.value.locked svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* Forms */
+.profile-form,
+.password-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.profile-input-group {
+  position: relative;
+}
+
+.profile-input-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.profile-input-field {
+  width: 100%;
+  background: #000;
+  border: 2px solid #27272a;
+  padding: 16px 16px 16px 48px;
+  border-radius: 16px;
+  color: var(--text-main);
+  font-size: 1rem;
+  font-family: inherit;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.profile-input-field:focus {
+  border-color: var(--accent-color);
+  outline: none;
+  background: #0a0a0a;
+  box-shadow: 0 0 0 4px rgba(255, 94, 58, 0.15);
+}
+
+.input-readonly {
+  background: #18181b;
+  border-color: transparent;
+  color: #71717a;
+  cursor: not-allowed;
+}
+
+.profile-input-group.readonly .profile-input-icon {
+  color: #52525b;
+}
+
+/* 3D Buttons */
+.btn-3d {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 16px;
+  font-weight: 800;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: all 0.1s ease;
+  position: relative;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Trigger Button for Password */
+.trigger-btn {
+  background: #27272a;
+  color: #fff;
+  box-shadow: 0 6px 0 #18181b;
+}
+
+.trigger-btn:active {
+  transform: translateY(6px);
+  box-shadow: 0 0 0 #18181b;
+}
+
+.save-btn {
+  background: var(--accent-gradient);
+  color: #000;
+  box-shadow: 0 6px 0 #c2410c, 0 15px 20px rgba(0, 0, 0, 0.2);
+}
+
+.save-btn:active {
+  transform: translateY(6px);
+  box-shadow: 0 0 0 #c2410c, inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.password-btn {
+  background: #fff;
+  color: #000;
+  box-shadow: 0 6px 0 #a1a1aa, 0 15px 20px rgba(0, 0, 0, 0.2);
+}
+
+.password-btn:active {
+  transform: translateY(6px);
+  box-shadow: 0 0 0 #a1a1aa, inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Form Header Row (for cancel button) */
+.form-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: -10px;
+}
+
+.form-header-row p {
+  color: var(--text-muted);
+}
+
+.close-link {
+  background: none;
+  border: none;
+  color: var(--error-color);
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.close-link:hover {
+  text-decoration: underline;
+}
+
+
+/* Divider */
+.divider {
+  border: none;
+  height: 2px;
+  background: #27272a;
+  margin: 10px 0;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .profile-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-row {
+    grid-template-columns: 1fr;
+  }
+
+  .header-content h1 {
+    font-size: 2.2rem;
+  }
+}

@@ -10,6 +10,7 @@ import Footer from './components/Footer/Footer'
 import NotFound from './pages/NotFound/NotFound'
 import ProtectedRoute from './Routes/ProtectedRoutes'
 import PublicRoute from './Routes/PublicRoutes'
+import Profile from './pages/profile/Profile'
 
 
 function App() {
@@ -25,7 +26,7 @@ function App() {
 
         <Route element={<ProtectedRoute />} >
           <Route path='/dashboard' element={<Dashboard />} />
-          {/* <Route path="/profile" element={<Profile />} />  */}
+          <Route path="/dashboard/profile" element={<Profile />} /> 
         </Route>
         <Route element={<PublicRoute />}>
           <Route path="/login" element={<AuthPage />} />
