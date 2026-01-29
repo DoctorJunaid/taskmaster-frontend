@@ -23,7 +23,7 @@ const triggerHaptic = () => {
 };
 
 // --- Sub-Component: Task Card (Memoized) ---
-const TaskCard = React.memo(({ task, onToggle, onDelete }) => {
+const TaskCard = React.memo(({ task, index, onToggle, onDelete }) => {
   const [showMenu, setShowMenu] = useState(false);
 
   return (
@@ -33,7 +33,7 @@ const TaskCard = React.memo(({ task, onToggle, onDelete }) => {
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.15 }} // Very fast fade
-      className={`task-card ${task.isDone ? 'done' : ''}`}
+      className={`task-card card-color-${index % 6} ${task.isDone ? 'done' : ''}`}
       onClick={() => onToggle(task.id || task._id, task.isDone)}
       onMouseLeave={() => setShowMenu(false)}
     >
@@ -197,7 +197,7 @@ export default function Dashboard() {
           [...Array(6)].map((_, i) => <div key={i} className="task-card skeleton-card"><div className="sk-line title"></div><div className="sk-line desc"></div><div className="sk-footer"><div className="sk-badge"></div><div className="sk-circle"></div></div></div>)
         ) : filteredTasks.length > 0 ? (
           <AnimatePresence mode='popLayout'>
-            {filteredTasks.map(task => <TaskCard key={task.id || task._id} task={task} onToggle={toggleTask} onDelete={deleteTask} />)}
+            {filteredTasks.map((task, index) => <TaskCard key={task.id || task._id} task={task} index={index} onToggle={toggleTask} onDelete={deleteTask} />)}
           </AnimatePresence>
         ) : (
           <div className="empty-state"><p>No tasks found. Time to relax!</p></div>
