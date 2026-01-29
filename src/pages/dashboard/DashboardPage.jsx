@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { TodoService } from '../../services/todo';
 import './Dashboard.css';
 import { useAuth } from '../../context/AuthContext';
+import CreateTaskModal from '../../components/CreateTaskModal/CreateTaskModal';
 
 // --- Icons (Static) ---
 const Icons = {
@@ -26,6 +26,15 @@ const triggerHaptic = () => {
 const TaskCard = React.memo(({ task, onToggle, onDelete }) => {
   const [showMenu, setShowMenu] = useState(false);
 
+  const colorIndex = useMemo(() => {
+    const id = task.id || task._id || "";
+    let hash = 0;
+    for (let i = 0; i < id.length; i++) {
+      hash = id.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    return Math.abs(hash) % 6;
+  }, [task.id, task._id]);
+
   return (
     <motion.div
       layout="position"
@@ -33,7 +42,7 @@ const TaskCard = React.memo(({ task, onToggle, onDelete }) => {
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.15 }} // Very fast fade
-      className={`task-card ${task.isDone ? 'done' : ''}`}
+      className={`task-card card-color-${colorIndex} ${task.isDone ? 'done' : ''}`}
       onClick={() => onToggle(task.id || task._id, task.isDone)}
       onMouseLeave={() => setShowMenu(false)}
     >
@@ -90,8 +99,6 @@ export default function Dashboard() {
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { user, logout } = useAuth();
-
-  const { register, handleSubmit, reset, formState: { isSubmitting } } = useForm();
 
   // Debounce Search
   useEffect(() => {
@@ -156,7 +163,6 @@ export default function Dashboard() {
       const result = await TodoService.create(user.username, newTask);
       setTasks(prev => [result.data || result.newTodo || result, ...prev]);
       setIsModalOpen(false);
-      reset();
       toast.success("Task created!");
     } catch (error) {
       toast.error("Failed to create task");
@@ -205,48 +211,11 @@ export default function Dashboard() {
       </div>
 
       {/* OPTIMIZED MODAL */}
-      <AnimatePresence>
-        {isModalOpen && (
-          <motion.div
-            key="modal-backdrop"
-            className="modal-backdrop"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.15 }}
-          >
-            <motion.div
-              className="modal-box"
-              initial={{ opacity: 0, scale: 0.9, y: 10 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 10 }}
-              transition={{ type: "spring", stiffness: 350, damping: 25 }}
-            >
-              <div className="modal-top">
-                <h2>Create New Task</h2>
-                <button className="icon-btn" onClick={() => setIsModalOpen(false)}><Icons.Close /></button>
-              </div>
-
-              <form onSubmit={handleSubmit(onCreateTask)}>
-                <div className="input-group">
-                  <input {...register("title", { required: true })} placeholder="Task Title" />
-                </div>
-                <div className="input-group">
-                  <input {...register("description")} placeholder="Description (Optional)" />
-                </div>
-                <div className="input-group">
-                  <input {...register("duedate")} type="date" required />
-                </div>
-                <button type="submit" className="save-btn" disabled={isSubmitting}>
-                  {isSubmitting ? 'Creating...' : 'Create Task'}
-                </button>
-              </form>
-            </motion.div>
-
-            <div className="backdrop-trigger" onClick={() => setIsModalOpen(false)}></div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <CreateTaskModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onCreate={onCreateTask}
+      />
     </div>
   );
 }
