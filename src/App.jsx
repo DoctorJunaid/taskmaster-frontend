@@ -10,18 +10,16 @@ import Footer from './components/Footer/Footer'
 import NotFound from './pages/NotFound/NotFound'
 import ProtectedRoute from './Routes/ProtectedRoutes'
 import PublicRoute from './Routes/PublicRoutes'
-import { useAuth } from './context/AuthContext'
 
 
 function App() {
   const navigate = useNavigate();
-  const { user, logout } = useAuth();
   return (
     <>
       <Toaster position="top-center" toastOptions={{
         style: { background: '#1F1F1F', color: '#fff', border: '1px solid #333' }
       }} />
-      <Header user={user} onLogout={logout} />
+      <Header />
       <Routes>
 
 

@@ -552,6 +552,19 @@
         align-items: flex-start;
     }
 
+    .header-left h1 {
+        font-size: 1.8rem;
+    }
+
+    .primary-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .controls-row {
+        flex-direction: column;
+    }
+
     .search-bar {
         min-width: 100%;
     }

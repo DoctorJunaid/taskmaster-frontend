@@ -7,19 +7,18 @@
 
 /* 1. TRANSPARENT CONTAINER */
 .transparent-nav {
-  position: absolute;
-  /* Absolute allows it to sit ON TOP of the background pattern */
+  position: absolute; /* Absolute allows it to sit ON TOP of the background pattern */
   top: 0;
   left: 0;
   width: 100%;
   height: var(--nav-height);
   z-index: 1000;
-
+  
   /* Fully Transparent - No Background, No Blur */
   background: transparent;
   backdrop-filter: none;
   border: none;
-
+  
   display: flex;
   align-items: center;
   justify-content: center;
@@ -49,18 +48,12 @@
 }
 
 .brand-icon {
-  width: 36px;
-  height: 36px;
+  width: 36px; height: 36px;
   color: var(--accent-color);
   /* Slight shadow to make logo pop against any background */
   filter: drop-shadow(0 0 12px rgba(255, 94, 58, 0.4));
 }
-
-.brand-icon svg {
-  width: 100%;
-  height: 100%;
-  stroke: currentColor;
-}
+.brand-icon svg { width: 100%; height: 100%; stroke: currentColor; }
 
 .brand-text {
   font-family: "Outfit", sans-serif;
@@ -69,119 +62,55 @@
   color: var(--text-main);
   letter-spacing: -0.5px;
   /* Text shadow for readability on dark backgrounds */
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 2px 10px rgba(0,0,0,0.5);
 }
 
-/* 3. USER PROFILE DROPDOWN */
-.profile-container {
-  position: relative;
-}
-
-.profile-dropdown {
-  position: absolute;
-  top: 120%;
-  right: 0;
-  width: 220px;
-  background: #18181b;
-  border: 1px solid #333;
-  border-radius: 16px;
-  padding: 8px;
-  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
-  transform-origin: top right;
-  overflow: hidden;
-}
-
-.dropdown-header {
-  padding: 12px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.dropdown-name {
-  color: #fff;
-  font-weight: 600;
-  font-size: 1rem;
-}
-
-.dropdown-email {
-  color: var(--text-muted);
-  font-size: 0.85rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.dropdown-divider {
-  height: 1px;
-  background: #333;
-  margin: 4px 0;
-}
-
-.dropdown-item {
-  width: 100%;
+/* 3. USER PROFILE (Logged In Only) */
+.user-profile-pill {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 12px 16px;
-  background: none;
-  border: none;
-  color: #d4d4d8;
-  font-size: 0.95rem;
-  cursor: pointer;
-  border-radius: 8px;
-  transition: all 0.2s;
-  text-align: left;
+  gap: 12px;
+  background: rgba(0, 0, 0, 0.4); /* Dark pill for contrast */
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 6px 6px 6px 16px;
+  border-radius: 50px;
+  backdrop-filter: blur(10px);
 }
 
-.dropdown-item:hover {
-  background: rgba(255, 255, 255, 0.05);
-  color: #fff;
+.user-name-text {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-main);
 }
 
-.dropdown-item.logout {
-  color: #ef4444;
+.avatar-circle {
+  width: 20px; height: 20px;
+  color: var(--text-muted);
 }
+.avatar-circle svg { width: 100%; height: 100%; }
 
-.dropdown-item.logout:hover {
-  background: rgba(239, 68, 68, 0.1);
-}
-
-.loading-spinner {
-  width: 16px;
-  height: 16px;
-  border: 2px solid rgba(239, 68, 68, 0.3);
-  border-top-color: #ef4444;
+.logout-mini-btn {
+  width: 32px; height: 32px;
   border-radius: 50%;
-  animation: spin 0.8s linear infinite;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
 }
 
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+.logout-mini-btn:hover {
+  background: rgba(255, 69, 69, 0.15);
+  color: #ff4545;
 }
-
-.dropdown-item svg {
-  width: 18px;
-  height: 18px;
-  opacity: 0.8;
-}
+.logout-mini-btn svg { width: 16px; height: 16px; }
 
 /* Mobile Optimization */
 @media (max-width: 480px) {
-
   /* Smaller header on mobile */
-  :root {
-    --nav-height: 60px;
-  }
-
-  .brand-text {
-    font-size: 1.2rem;
-  }
-
-  .brand-icon {
-    width: 30px;
-    height: 30px;
-  }
+  :root { --nav-height: 60px; }
+  
+  .brand-text { font-size: 1.2rem; }
+  .brand-icon { width: 30px; height: 30px; }
 }
