@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './Header.css';
+import Avatar3D from '../Avatar3D/Avatar3D';
+import { AnimatePresence, motion } from 'framer-motion';
 
 const Icons = {
   HexLogo: () => (
@@ -22,11 +24,50 @@ const Icons = {
   )
 };
 
+import toast from 'react-hot-toast';
+
 const Header = ({ user, onLogout }) => {
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Reset state when user logs out
+  useEffect(() => {
+    if (!user) {
+      setShowDropdown(false);
+      setIsLoggingOut(false);
+    }
+  }, [user]);
+
+  const handleLogout = async () => {
+    setIsLoggingOut(true);
+    const toastId = toast.loading('Logging out...', {
+      style: { background: '#333', color: '#fff' }
+    });
+
+    try {
+      await onLogout();
+      toast.dismiss(toastId);
+    } catch (error) {
+      toast.error('Logout failed', { id: toastId });
+      setIsLoggingOut(false);
+    }
+  };
+
   return (
     <nav className="transparent-nav">
       <div className="nav-content">
-        
+
         {/* BRAND LOGO (Always Visible) */}
         <a href="/" className="nav-brand">
           <div className="brand-icon">
@@ -35,18 +76,47 @@ const Header = ({ user, onLogout }) => {
           <span className="brand-text">TaskMaster</span>
         </a>
 
-        {/* RIGHT SIDE: Only shows User Profile if logged in. 
-            Guest buttons are REMOVED as requested. */}
+        {/* RIGHT SIDE: Only shows User Profile if logged in. */}
         <div className="nav-actions">
           {user && (
-            <div className="user-profile-pill">
-              <div className="avatar-circle">
-                <Icons.User />
-              </div>
-              <span className="user-name-text">{user.username || "User"}</span>
-              <button onClick={onLogout} className="logout-mini-btn" title="Logout">
-                <Icons.LogOut />
-              </button>
+            <div className="profile-container" ref={dropdownRef}>
+              <Avatar3D
+                initial={user.username ? user.username.charAt(0).toUpperCase() : 'U'}
+                onClick={() => !isLoggingOut && setShowDropdown(!showDropdown)}
+              />
+
+              <AnimatePresence>
+                {showDropdown && (
+                  <motion.div
+                    className="profile-dropdown"
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    transition={{ duration: 0.15 }}
+                  >
+                    <div className="dropdown-header">
+                      <span className="dropdown-name">{user.username}</span>
+                      <span className="dropdown-email">{user.email || 'User'}</span>
+                    </div>
+                    <div className="dropdown-divider"></div>
+                    <button className="dropdown-item">
+                      <Icons.User /> View Profile
+                    </button>
+                    <button
+                      className="dropdown-item logout"
+                      onClick={handleLogout}
+                      disabled={isLoggingOut}
+                    >
+                      {isLoggingOut ? (
+                        <span className="loading-spinner"></span>
+                      ) : (
+                        <Icons.LogOut />
+                      )}
+                      {isLoggingOut ? 'Logging out...' : 'Logout'}
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           )}
         </div>
