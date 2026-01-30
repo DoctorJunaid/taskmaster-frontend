@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
 import './Profile.css';
+import Avatar3D from '../../components/Avatar3D/Avatar3d';
 
 // --- Icons (Lucide Style) ---
 const Icons = {
@@ -140,7 +141,7 @@ export default function Profile() {
           <p>Manage your account settings and preferences</p>
         </div>
         <div className="user-badge-3d">
-          <div className="avatar-3d">{user.username.charAt(0).toUpperCase()}</div>
+          <Avatar3D letter={user.username.charAt(0).toUpperCase()} size={64} onClick={() => { }} />
           <div className="badge-info">
             <span className="badge-name">{user.username}</span>
             <span className="badge-role">Member since {joinDate}</span>

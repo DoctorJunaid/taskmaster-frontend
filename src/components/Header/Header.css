@@ -1,116 +1,204 @@
 :root {
   --nav-height: 80px;
   --text-main: #ffffff;
-  --text-muted: #888;
+  --text-muted: #9ca3af;
   --accent-color: #FF5E3A;
+  --bg-dropdown: #18181b;
+  --border-color: #27272a;
 }
 
-/* 1. TRANSPARENT CONTAINER */
+/* 1. Navbar Container */
 .transparent-nav {
-  position: absolute; /* Absolute allows it to sit ON TOP of the background pattern */
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: var(--nav-height);
   z-index: 1000;
-  
-  /* Fully Transparent - No Background, No Blur */
-  background: transparent;
-  backdrop-filter: none;
-  border: none;
-  
+  pointer-events: none;
+  /* Allow clicks to pass through empty areas */
+
   display: flex;
-  align-items: center;
   justify-content: center;
+  /* Blur backdrop for premium feel */
+  backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.01);
 }
 
+/* 2. Content Wrapper */
 .nav-content {
   width: 100%;
   max-width: 1200px;
+  height: 100%;
   padding: 0 24px;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-/* 2. BRANDING */
+/* 3. Brand */
 .nav-brand {
   display: flex;
   align-items: center;
   gap: 12px;
   text-decoration: none;
-  opacity: 0.9;
-  transition: opacity 0.2s;
-}
-
-.nav-brand:hover {
-  opacity: 1;
+  pointer-events: auto;
+  /* Re-enable clicks */
+  cursor: pointer;
 }
 
 .brand-icon {
-  width: 36px; height: 36px;
+  width: 32px;
+  height: 32px;
   color: var(--accent-color);
-  /* Slight shadow to make logo pop against any background */
-  filter: drop-shadow(0 0 12px rgba(255, 94, 58, 0.4));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 0 8px rgba(255, 94, 58, 0.5));
 }
-.brand-icon svg { width: 100%; height: 100%; stroke: currentColor; }
+
+.brand-icon svg {
+  width: 100%;
+  height: 100%;
+  stroke: currentColor;
+}
 
 .brand-text {
-  font-family: "Outfit", sans-serif;
+  font-family: 'Outfit', sans-serif;
   font-weight: 700;
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   color: var(--text-main);
   letter-spacing: -0.5px;
-  /* Text shadow for readability on dark backgrounds */
-  text-shadow: 0 2px 10px rgba(0,0,0,0.5);
 }
 
-/* 3. USER PROFILE (Logged In Only) */
-.user-profile-pill {
+/* 4. Right Side Actions */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  pointer-events: auto;
+  /* Re-enable clicks */
+}
+
+/* 5. Profile Wrapper - The positioning context */
+.profile-wrapper {
+  position: relative;
+  /* We don't need strict width/height here, 
+     the Avatar3D button defines its own size. 
+     Just need strictly 'relative' for dropdown positioning. */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 6. Dropdown Menu */
+.profile-dropdown {
+  position: absolute;
+  top: 120%;
+  /* Push it down a bit */
+  right: 0;
+  width: 260px;
+
+  background: var(--bg-dropdown);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+
+  padding: 8px;
+
+  /* Modern Shadow */
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.5),
+    0 4px 6px -2px rgba(0, 0, 0, 0.3);
+
+  transform-origin: top right;
+  z-index: 2000;
+
+  display: flex;
+  flex-direction: column;
+}
+
+/* Dropdown Internals */
+.dropdown-header {
+  padding: 12px;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 4px;
+}
+
+.dropdown-name {
+  display: block;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.dropdown-email {
+  display: block;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 2px;
+}
+
+.dropdown-item {
   display: flex;
   align-items: center;
   gap: 12px;
-  background: rgba(0, 0, 0, 0.4); /* Dark pill for contrast */
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 6px 6px 6px 16px;
-  border-radius: 50px;
-  backdrop-filter: blur(10px);
-}
+  width: 100%;
+  padding: 10px 12px;
 
-.user-name-text {
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: var(--text-main);
-}
-
-.avatar-circle {
-  width: 20px; height: 20px;
-  color: var(--text-muted);
-}
-.avatar-circle svg { width: 100%; height: 100%; }
-
-.logout-mini-btn {
-  width: 32px; height: 32px;
-  border-radius: 50%;
+  background: transparent;
   border: none;
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--text-muted);
+  border-radius: 6px;
+
+  color: #e4e4e7;
+  font-size: 0.9rem;
+  text-align: left;
   cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: all 0.2s;
+  transition: background 0.2s;
 }
 
-.logout-mini-btn:hover {
-  background: rgba(255, 69, 69, 0.15);
-  color: #ff4545;
+.dropdown-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
 }
-.logout-mini-btn svg { width: 16px; height: 16px; }
 
-/* Mobile Optimization */
-@media (max-width: 480px) {
-  /* Smaller header on mobile */
-  :root { --nav-height: 60px; }
-  
-  .brand-text { font-size: 1.2rem; }
-  .brand-icon { width: 30px; height: 30px; }
+.dropdown-item svg {
+  width: 18px;
+  height: 18px;
+  color: var(--text-muted);
+}
+
+.dropdown-item:hover svg {
+  color: #fff;
+}
+
+.dropdown-item.logout {
+  color: #ef4444;
+  margin-top: 4px;
+}
+
+.dropdown-item.logout svg {
+  color: #ef4444;
+}
+
+.dropdown-item.logout:hover {
+  background: rgba(239, 68, 68, 0.1);
+}
+
+/* Mobile Tweaks */
+@media (max-width: 640px) {
+  :root {
+    --nav-height: 64px;
+  }
+
+  .brand-text {
+    font-size: 1.25rem;
+  }
+
+  /* Avatar size is handled in Avatar3d.css, 
+     but we could override here if needed, 
+     but 50px is fine for mobile too. */
 }

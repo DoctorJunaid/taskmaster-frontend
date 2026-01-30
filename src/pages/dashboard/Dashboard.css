@@ -557,8 +557,9 @@
     }
 
     .primary-btn {
-        width: 100%;
-        justify-content: center;
+        width: auto;
+        padding: 12px 24px;
+        font-size: 0.95rem;
     }
 
     .controls-row {
