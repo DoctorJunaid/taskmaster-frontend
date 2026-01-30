@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import toast from 'react-hot-toast';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import './CreateTaskModal.css';
@@ -20,6 +21,15 @@ const CreateTaskModal = ({ isOpen, onClose, onCreate }) => {
     }, [isOpen, reset]);
 
     const onSubmit = async (data) => {
+        const selectedDate = new Date(data.duedate);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Reset time part for accurate comparison
+
+        if (selectedDate < today) {
+            toast.error("Can't choose a past date!");
+            return;
+        }
+
         await onCreate(data);
         reset();
     };

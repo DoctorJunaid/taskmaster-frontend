@@ -19,7 +19,7 @@ function App() {
     <>
       <Toaster position="top-center" toastOptions={{
         style: { background: '#1F1F1F', color: '#fff', border: '1px solid #333' }
-      }} />
+      }} containerStyle={{ zIndex: 99999 }} />
       <Header />
       <Routes>
 

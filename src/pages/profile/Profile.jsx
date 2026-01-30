@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
 import './Profile.css';
+import { TodoService } from '../../services/todo';
 import Avatar3D from '../../components/Avatar3D/Avatar3d';
 
 // --- Icons (Lucide Style) ---
@@ -92,8 +93,25 @@ export default function Profile() {
   }, [user, reset]);
 
   const fetchUserStats = async () => {
-    // Placeholder stats
-    setUserStats({ totalTasks: 24, completedTasks: 18, pendingTasks: 6 });
+    try {
+      const response = await TodoService.getAll(user.username);
+      // Determine the array source just like in Dashboard logic
+      const todos = response.data || response.todos || response.todo || [];
+
+      const total = todos.length;
+      const completed = todos.filter(t => t.isDone).length;
+      const pending = todos.filter(t => !t.isDone).length;
+
+      setUserStats({
+        totalTasks: total,
+        completedTasks: completed,
+        pendingTasks: pending
+      });
+    } catch (error) {
+      console.error("Failed to fetch user stats", error);
+      // Fallback
+      setUserStats({ totalTasks: 0, completedTasks: 0, pendingTasks: 0 });
+    }
   };
 
   const onProfileSubmit = async (data) => {
@@ -149,6 +167,7 @@ export default function Profile() {
           <Avatar3D letter={user.username.charAt(0).toUpperCase()} size={64} onClick={() => { }} />
           <div className="badge-info">
             <span className="badge-name">{user.username}</span>
+            <span className="badge-email" style={{ color: '#a1a1aa', fontSize: '0.9rem' }}>{user.email}</span>
             <span className="badge-role">Member since {joinDate}</span>
           </div>
         </div>
@@ -199,6 +218,7 @@ export default function Profile() {
                 <div className="info-row">
                   <span className="label">Email</span>
                   <span className="value">{user.email || <span style={{ opacity: 0.5 }}>No email set</span>}</span>
+
                 </div>
               </motion.div>
             ) : (
