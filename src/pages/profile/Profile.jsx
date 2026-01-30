@@ -8,6 +8,7 @@ import { useAuth } from '../../context/AuthContext';
 import './Profile.css';
 import { TodoService } from '../../services/todo';
 import Avatar3D from '../../components/Avatar3D/Avatar3d';
+import { AuthService } from "../../services/auth"
 
 // --- Icons (Lucide Style) ---
 const Icons = {
@@ -134,14 +135,7 @@ export default function Profile() {
       return;
     }
     try {
-      // NOTE: Backend might require currentPassword.
-      // If it does, this will fail or we need to change how we handle it.
-      // Sending 'placeholder' if not provided, assuming admin reset logic or user wants UI change regardless.
-      await axios.put(
-        `${import.meta.env.VITE_API_URL}/change-password`,
-        { newPassword: data.newPassword },
-        { headers: { "Content-Type": "application/json" }, withCredentials: true }
-      );
+      await AuthService.changePassword(user.username, data.newPassword)
       toast.success("Password changed successfully!");
       resetPassword();
       setShowPasswordForm(false);
