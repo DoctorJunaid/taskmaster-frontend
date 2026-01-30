@@ -198,7 +198,28 @@
     font-size: 1.25rem;
   }
 
+
   /* Avatar size is handled in Avatar3d.css, 
      but we could override here if needed, 
      but 50px is fine for mobile too. */
+}
+
+/* Button for back to dashboard */
+.back-to-dashboard-btn {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.back-to-dashboard-btn:hover {
+  background: var(--bg-dropdown);
+  color: var(--text-main);
+  border-color: var(--text-muted);
 }

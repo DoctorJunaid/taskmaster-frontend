@@ -38,6 +38,28 @@
   letter-spacing: -1px;
 }
 
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 16px;
+  transition: color 0.2s;
+}
+
+.back-link:hover {
+  color: var(--accent-color);
+}
+
+.back-link svg {
+  width: 20px;
+  height: 20px;
+}
+
+
 .header-content p {
   color: var(--text-muted);
   font-size: 1.15rem;
@@ -141,7 +163,7 @@
     6px 6px 12px rgba(0, 0, 0, 0.5),
     -2px -2px 10px rgba(255, 255, 255, 0.08),
     inset 2px 2px 5px rgba(255, 255, 255, 0.2);
-  transform: rotate(-5deg);
+  /* transform: rotate(-5deg); Removed rotation */
 }
 
 .icon-3d-inner {
@@ -377,6 +399,17 @@
 .password-btn:active {
   transform: translateY(6px);
   box-shadow: 0 0 0 #a1a1aa, inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.logout-btn {
+  background: #27272a;
+  color: #ef4444;
+  box-shadow: 0 6px 0 #7f1d1d, 0 15px 20px rgba(0, 0, 0, 0.2);
+}
+
+.logout-btn:active {
+  transform: translateY(6px);
+  box-shadow: 0 0 0 #7f1d1d, inset 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 /* Form Header Row (for cancel button) */

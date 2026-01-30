@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useAuth } from '../../context/AuthContext';
 import toast from 'react-hot-toast';
 import Avatar3D from '../Avatar3D/Avatar3d';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const Icons = {
   HexLogo: () => (
@@ -30,6 +30,7 @@ const Header = () => {
   const dropdownRef = useRef(null);
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   // Close dropdown if clicked outside
   useEffect(() => {
@@ -79,10 +80,19 @@ const Header = () => {
                   AVATAR COMPONENT 
                   - Now a button receiving the onClick directly 
               */}
-              <Avatar3D
-                letter={user.username ? user.username.charAt(0).toUpperCase() : 'U'}
-                onClick={toggleDropdown}
-              />
+              {location.pathname === '/dashboard/profile' ? (
+                <button
+                  onClick={() => navigate('/dashboard')}
+                  className="back-to-dashboard-btn"
+                >
+                  Back to Dashboard
+                </button>
+              ) : (
+                <Avatar3D
+                  letter={user.username ? user.username.charAt(0).toUpperCase() : 'U'}
+                  onClick={toggleDropdown}
+                />
+              )}
 
               {/* DROPDOWN MENU */}
               <AnimatePresence>
@@ -96,7 +106,7 @@ const Header = () => {
                   >
                     <div className="dropdown-header">
                       <span className="dropdown-name">{user.username}</span>
-                      <span className="dropdown-email">{user.email || 'user@example.com'}</span>
+                      {/* Email removed as per request */}
                     </div>
 
                     <button

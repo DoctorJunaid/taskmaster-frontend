@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
@@ -9,6 +10,7 @@ import Avatar3D from '../../components/Avatar3D/Avatar3d';
 
 // --- Icons (Lucide Style) ---
 const Icons = {
+  ArrowLeft: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" /></svg>,
   User: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>,
   Mail: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" /></svg>,
   Lock: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>,
@@ -68,7 +70,7 @@ const StatCard = ({ label, value, type }) => (
 );
 
 export default function Profile() {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [showPasswordForm, setShowPasswordForm] = useState(false);
   const [userStats, setUserStats] = useState({ totalTasks: 0, completedTasks: 0, pendingTasks: 0 });
@@ -137,6 +139,9 @@ export default function Profile() {
       {/* Header */}
       <div className="profile-header">
         <div className="header-content">
+          <Link to="/dashboard" className="back-link">
+            <Icons.ArrowLeft /> Back to Dashboard
+          </Link>
           <h1>My Profile</h1>
           <p>Manage your account settings and preferences</p>
         </div>
@@ -193,7 +198,7 @@ export default function Profile() {
                 </div>
                 <div className="info-row">
                   <span className="label">Email</span>
-                  <span className="value">{user.email}</span>
+                  <span className="value">{user.email || <span style={{ opacity: 0.5 }}>No email set</span>}</span>
                 </div>
               </motion.div>
             ) : (
@@ -302,6 +307,25 @@ export default function Profile() {
             )}
           </AnimatePresence>
         </motion.div>
+      </div>
+
+      {/* Logout Section */}
+      <div className="logout-section" style={{ marginTop: '40px', display: 'flex', justifyContent: 'center' }}>
+        <button
+          className="logout-btn btn-3d"
+          style={{ maxWidth: '300px' }}
+          onClick={async () => {
+            const toastId = toast.loading('Logging out...');
+            try {
+              await logout();
+              toast.dismiss(toastId);
+            } catch (err) {
+              toast.error('Logout failed', { id: toastId });
+            }
+          }}
+        >
+          Sign Out
+        </button>
       </div>
     </div>
   );
