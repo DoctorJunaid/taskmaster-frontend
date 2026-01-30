@@ -45,7 +45,7 @@ export default function ResetPassword() {
       toast.success("Password reset successfully!");
       
       // Redirect to login after delay
-      setTimeout(() => navigate('/auth'), 1000);
+      setTimeout(() => navigate('/login'), 1000);
     } catch (error) {
       const msg = error.response?.data?.msg || "Failed to reset password.";
       toast.error(msg);
