@@ -11,6 +11,8 @@ import NotFound from './pages/NotFound/NotFound'
 import ProtectedRoute from './Routes/ProtectedRoutes'
 import PublicRoute from './Routes/PublicRoutes'
 import Profile from './pages/profile/Profile'
+import VerifyEmail from './pages/verifyEmail/VerifyEmail'
+
 
 
 function App() {
@@ -28,6 +30,8 @@ function App() {
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path="/dashboard/profile" element={<Profile />} />
         </Route>
+        <Route path="/verify-email" element={<VerifyEmail />} />
+
         <Route element={<PublicRoute />}>
           <Route path="/login" element={<AuthPage />} />
           <Route path="/reset-password" element={<ResetPassword />} />

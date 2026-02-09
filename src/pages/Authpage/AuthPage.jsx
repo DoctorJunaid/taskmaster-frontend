@@ -36,6 +36,7 @@ const InputField = ({ icon: Icon, type, placeholder, register, name, error }) =>
 
 export default function AuthPage() {
   const [mode, setMode] = useState('login');
+  const [mailType, setMailType] = useState('signup'); // 'signup' or 'forgot'
   const navigate = useNavigate();
   const { login } = useAuth();
 
@@ -99,11 +100,8 @@ export default function AuthPage() {
 
         }
       )
-      // Signup successful, wait a moment then refetch user data
-      setTimeout(async () => {
-        await login();
-        navigate("/dashboard");
-      }, 100);
+      setMailType('signup');
+      setMode('check-mail');
       toast.success(res.data.msg);
 
     } catch (err) {
@@ -127,6 +125,7 @@ export default function AuthPage() {
           withCredentials: true,
         }
       )
+      setMailType('forgot');
       setMode('check-mail');
       toast.success(res.data.msg);
 
@@ -248,7 +247,12 @@ export default function AuthPage() {
                 >
                   <div className="mail-icon-circle"><Icons.CheckMail /></div>
                   <h3>Check your mail</h3>
-                  <p>We have sent recovery instructions to your email.</p>
+                  <p>
+                    {mailType === 'signup'
+                      ? "We've sent a verification link to your email. Please verify your account to continue."
+                      : "We have sent recovery instructions to your email."
+                    }
+                  </p>
                   <button className="action-btn" onClick={() => window.open('mailto:')}>Open Email App</button>
                   <div className="back-link-container">
                     <a href="#" onClick={(e) => { e.preventDefault(); setMode('login'); }} className="back-link">

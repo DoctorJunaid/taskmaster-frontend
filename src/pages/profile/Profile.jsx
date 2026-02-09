@@ -117,9 +117,9 @@ export default function Profile() {
 
   const onProfileSubmit = async (data) => {
     try {
-      await axios.put(
-        `${import.meta.env.VITE_API_URL}/profile`,
-        { username: user.username, email: data.email }, // Username not changed
+      await axios.patch(
+        `${import.meta.env.VITE_API_URL}/${user.username}`,
+        { newEmail: data.email },
         { headers: { "Content-Type": "application/json" }, withCredentials: true }
       );
       toast.success("Profile updated successfully!");

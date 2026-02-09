@@ -21,7 +21,7 @@ export const AuthService = {
 
     changePassword: async (username, newPassword) => {
         const response = await axios.patch(
-            import.meta.env.VITE_API_URL + `/${username}/change-password`,
+            import.meta.env.VITE_API_URL + `/change-password`,
             {
                 username,
                 password: newPassword
@@ -33,7 +33,7 @@ export const AuthService = {
                 withCredentials: true,
             }
         );
-      
+
         return response.data;
 
     },
