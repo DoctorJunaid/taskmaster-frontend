@@ -54,7 +54,7 @@ export default function AuthPage() {
   const { register: forgotReg, handleSubmit: handleForgot, formState: { errors: forgotErrors, isSubmitting: forgotLoading }, setError: setForgotError } = useForm();
 
   const googleLogin = () => {
-    window.location.href = `${import.meta.env.VITE_GOOGLE_API_URL}`;
+    window.location.href = `${import.meta.env.VITE_API_URL}/google`;
   };
 
   const slideVariants = {
