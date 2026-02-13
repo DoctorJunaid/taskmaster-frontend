@@ -16,12 +16,12 @@ export const AuthProvider = ({ children }) => {
           withCredentials: true // sends the cookie to backend
         });
 
-        if (res.data.isStatus) {
+        if (res.data?.isStatus) {
           setUser(res.data.data);
-        } else if (res.data.user) {
+        } else if (res.data?.user) {
           setUser(res.data.user);
         } else {
-          setUser(res.data);
+          setUser(null);
         }
 
       } catch (err) {
@@ -40,12 +40,12 @@ export const AuthProvider = ({ children }) => {
         withCredentials: true
       });
 
-      if (res.data.isStatus) {
+      if (res.data?.isStatus) {
         setUser(res.data.data);
-      } else if (res.data.user) {
+      } else if (res.data?.user) {
         setUser(res.data.user);
       } else {
-        setUser(res.data);
+        setUser(null);
       }
     } catch (err) {
       setUser(null);
