@@ -207,7 +207,7 @@ export default function Profile() {
           />
           <Avatar3D
             letter={user.username.charAt(0).toUpperCase()}
-            size={64}
+            size={80}
             onClick={handleAvatarclick}
             image={user.profileImage}
           />
