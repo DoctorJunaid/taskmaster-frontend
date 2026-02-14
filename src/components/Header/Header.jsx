@@ -91,6 +91,7 @@ const Header = () => {
                 <Avatar3D
                   letter={user.username ? user.username.charAt(0).toUpperCase() : 'U'}
                   onClick={toggleDropdown}
+                  image={user.profileImage}
                 />
               )}
 

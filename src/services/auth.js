@@ -41,8 +41,19 @@ export const AuthService = {
         try {
             await axios.post(import.meta.env.VITE_API_URL + '/logout');
         } catch (e) { console.error(e); }
-
-        setUser(null);
         window.location.href = '/login';
-    }
+  },
+  uploadImageProfile: async (username, file) => {
+    const formData = new FormData();
+    formData.append('profileImage', file);
+    const response = await axios.patch(
+          `${import.meta.env.VITE_API_URL}/${username}/upload-image`,
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+            withCredentials: true,
+          }
+        );
+        return response.data;
+  }
 };

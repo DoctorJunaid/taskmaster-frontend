@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useForm } from 'react-hook-form';
@@ -72,14 +72,54 @@ const StatCard = ({ label, value, type }) => (
 );
 
 export default function Profile() {
-  const { user, logout } = useAuth();
+  const { user, logout, setUser } = useAuth();
+  const fileInputRef = useRef(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const [showPasswordForm, setShowPasswordForm] = useState(false);
   const [userStats, setUserStats] = useState({ totalTasks: 0, completedTasks: 0, pendingTasks: 0 });
   const [joinDate, setJoinDate] = useState('');
 
   const { register, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm();
   const { register: passwordReg, handleSubmit: handlePasswordSubmit, formState: { errors: passwordErrors, isSubmitting: passwordLoading }, reset: resetPassword } = useForm();
+
+  // for Image Uploading logic
+  const handleAvatarclick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  }
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // local size check maximum (3MB)
+    if (file.size > 3 * 1024 * 1024) {
+      return toast.error("File is too large! Max 3MB.");
+    }
+
+    const toastId = toast.loading("Uploading your new look...");
+    setIsUploading(true);
+    try {
+      const response = await AuthService.uploadImageProfile(user.username, file);
+
+      if (response.isStatus) {
+        // update global state to reflect new avatar immediately
+        const updatedUser = response.data;
+        setUser(prev => ({ ...prev, profileImage: updatedUser.profileImage }));
+        toast.success("Profile updated!", { id: toastId });
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error(error.response?.data?.msg || "Upload failed", { id: toastId });
+    } finally {
+      setIsUploading(false);
+      e.target.value = null;
+    }
+  };
+
+
 
   useEffect(() => {
     if (user?.username) {
@@ -158,7 +198,19 @@ export default function Profile() {
           <p>Manage your account settings and preferences</p>
         </div>
         <div className="user-badge-3d">
-          <Avatar3D letter={user.username.charAt(0).toUpperCase()} size={64} onClick={() => { }} />
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileChange}
+            style={{ display: 'none' }}
+            accept="image/*"
+          />
+          <Avatar3D
+            letter={user.username.charAt(0).toUpperCase()}
+            size={64}
+            onClick={handleAvatarclick}
+            image={user.profileImage}
+          />
           <div className="badge-info">
             <span className="badge-name">{user.username}</span>
             <span className="badge-email" style={{ color: '#a1a1aa', fontSize: '0.9rem' }}>{user.email}</span>
