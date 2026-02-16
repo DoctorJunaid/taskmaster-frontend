@@ -102,7 +102,7 @@ export default function Profile() {
     const toastId = toast.loading("Uploading your new look...");
     setIsUploading(true);
     try {
-      const response = await AuthService.uploadImageProfile(user.username, file);
+      const response = await AuthService.updateImageProfile(user.username, file);
 
       if (response.isStatus) {
         // update global state to reflect new avatar immediately
@@ -207,13 +207,13 @@ export default function Profile() {
           />
           <Avatar3D
             letter={user.username.charAt(0).toUpperCase()}
-            size={80}
+            size={100}
             onClick={handleAvatarclick}
             image={user.profileImage}
           />
           <div className="badge-info">
             <span className="badge-name">{user.username}</span>
-            <span className="badge-email" style={{ color: '#a1a1aa', fontSize: '0.9rem' }}>{user.email}</span>
+            <span className="badge-email">{user.email}</span>
             <span className="badge-role">Member since {joinDate}</span>
           </div>
         </div>
