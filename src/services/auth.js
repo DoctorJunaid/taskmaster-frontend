@@ -44,10 +44,10 @@ export const AuthService = {
     window.location.href = "/login";
   },
 
-  getSignatureForUpload: async () => {
+  getSignatureForUpload: async (username) => {
     try {
-      const response = await axios.post(
-        import.meta.env.VITE_API_URL + "sign-upload",
+      const response = await axios.patch(
+        `${import.meta.env.VITE_API_URL}/${username}/sign-upload`,
         {},
         {
           headers: {
@@ -59,15 +59,16 @@ export const AuthService = {
       return response.data.data;
     } catch (error) {
       console.log(error);
+      throw error;
     }
   },
 
   updateImageProfile: async (username, file) => {
     try {
-      //  Getting Signature 
-      const { signature, timestamp, cloudName, apiKey } = await this.getSignatureForUpload();
+      // Get Signature 
+      const { signature, timestamp, cloudName, apiKey } = await AuthService.getSignatureForUpload(username);
 
-      //   Uploading to Cloudinary
+      // Upload to Cloudinary
       const formData = new FormData();
       formData.append("file", file);
       formData.append("api_key", apiKey);
@@ -77,11 +78,12 @@ export const AuthService = {
 
       const cloudinaryResponse = await axios.post(
         `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
-        formData,
+        formData
       );
+
       const imageUrl = cloudinaryResponse.data.secure_url;
 
-      // Updating user profile data in   MongoDB
+      // Update User Profile in Backend
       const response = await axios.patch(
         `${import.meta.env.VITE_API_URL}/${username}/upload-image`,
         { profileImageUrl: imageUrl },
@@ -93,16 +95,14 @@ export const AuthService = {
 
       return response.data;
     } catch (error) {
-      console.error("Upload process failed:", error.message);
-      if (error.config?.url?.includes("cloudinary")) {
-        throw new Error(
-          "Cloudinary upload failed. Check your signature or file size.",
-        );
-      } else {
-        throw new Error(
-          "Backend update failed. The image is on Cloudinary, but not saved to your profile.",
-        );
+      console.error("Upload process failed:", error);
+      if (error.response?.data?.msg) {
+        throw new Error(error.response.data.msg);
       }
+      if (error.config?.url?.includes("cloudinary")) {
+        throw new Error("Cloudinary upload failed. Check your signature or file size.");
+      }
+      throw new Error("Backend update failed. The image is on Cloudinary, but not saved to your profile.");
     }
   },
 };
